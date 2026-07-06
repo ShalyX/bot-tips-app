@@ -53,7 +53,7 @@ createRoot(document.getElementById('root')!).render(
         supportedChains: [botChainTestnet as any, sepolia as any],
         embeddedWallets: {
           createOnLogin: 'off',
-        }
+        } as any
       }}
     >
       <App />

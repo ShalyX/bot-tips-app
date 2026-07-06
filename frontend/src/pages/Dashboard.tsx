@@ -54,7 +54,7 @@ export default function Dashboard({ currentAccount }: { currentAccount: string }
       const events = await registryContract.queryFilter(sentFilter);
       let sentTxs: any[] = [];
       events.forEach((event: any) => {
-        const [from, to, timestamp, name, message, amount] = event.args;
+        const [, to, timestamp, , message, amount] = event.args;
         sentTxs.push({
           type: 'Sent',
           address: to,

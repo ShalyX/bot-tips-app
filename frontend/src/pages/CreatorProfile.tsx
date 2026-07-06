@@ -131,7 +131,7 @@ export default function CreatorProfile({ currentAccount }: { currentAccount: str
               src={creatorAvatar.replace('_normal', '_400x400')} 
               alt="Avatar" 
               className="w-24 h-24 rounded-full border-2 border-primary-fixed/50 object-cover z-10 bg-black" 
-              onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${creatorName}`; }}
+              onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${creatorUsername}`; }}
             />
           ) : (
             <div className="w-24 h-24 rounded-full bg-surface-container border-2 border-primary-fixed/20 flex items-center justify-center flex-shrink-0 z-10 shadow-lg shadow-black/50">
