@@ -1,6 +1,8 @@
 import hardhatEthers from "@nomicfoundation/hardhat-ethers";
 import "dotenv/config";
 
+const privateKey = process.env["PRIVATE_KEY"];
+
 /** @type import('hardhat/config').HardhatUserConfig */
 export default {
   plugins: [hardhatEthers],
@@ -10,7 +12,7 @@ export default {
       type: "http",
       url: "https://rpc.bohr.life",
       chainId: 968,
-      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+      accounts: privateKey ? [privateKey] : [],
     }
   }
 };

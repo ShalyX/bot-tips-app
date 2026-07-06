@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { BrowserProvider, Contract, parseEther, formatEther } from 'ethers';
 import { useWallets } from '@privy-io/react-auth';
 import { useParams } from 'react-router-dom';
@@ -25,7 +25,7 @@ export default function CreatorProfile({ currentAccount }: { currentAccount: str
 
   const { wallets } = useWallets();
 
-  const getCreatorData = async () => {
+  const getCreatorData = useCallback(async () => {
     try {
       if (CREATOR_REGISTRY_ADDRESS && wallets.length > 0) {
         const wallet = wallets[0];
@@ -60,11 +60,11 @@ export default function CreatorProfile({ currentAccount }: { currentAccount: str
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [targetAddress, wallets]);
 
   useEffect(() => {
     getCreatorData();
-  }, [wallets, targetAddress]);
+  }, [getCreatorData]);
 
   const buyCoffee = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -6,7 +6,7 @@ export default function Footer() {
           © {new Date().getFullYear()} BOT-TIPS
         </div>
         <nav className="flex flex-wrap gap-6 justify-center">
-          <a className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-fixed transition-all" href="https://faucet.bohr.life/" target="_blank" rel="noreferrer">Faucet</a>
+          <a className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-fixed transition-all" href="https://faucet.botchain.ai/basic" target="_blank" rel="noreferrer">Faucet</a>
           <a className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-fixed transition-all" href="https://scan.bohr.life/" target="_blank" rel="noreferrer">Explorer</a>
           <a className="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-all" href="https://twitter.com/Botchain_" target="_blank" rel="noreferrer">Twitter</a>
           <a className="font-body-sm text-body-sm text-on-surface-variant hover:text-secondary transition-all" href="https://discord.gg/botchain" target="_blank" rel="noreferrer">Discord</a>

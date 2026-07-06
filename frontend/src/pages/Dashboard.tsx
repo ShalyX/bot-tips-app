@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { BrowserProvider, Contract, formatEther, parseEther } from 'ethers';
 import { useWallets, usePrivy } from '@privy-io/react-auth';
 import { CREATOR_REGISTRY_ADDRESS, CREATOR_REGISTRY_ABI } from '../config/contracts';
@@ -35,7 +35,7 @@ export default function Dashboard({ currentAccount }: { currentAccount: string }
   const xUsername = user?.twitter?.username || user?.twitter?.name || "Anonymous";
   const xAvatar = user?.twitter?.profilePictureUrl || "";
 
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     if (!currentAccount || wallets.length === 0) return;
     
     try {
@@ -101,11 +101,11 @@ export default function Dashboard({ currentAccount }: { currentAccount: string }
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
     }
-  };
+  }, [currentAccount, wallets]);
 
   useEffect(() => {
     fetchDashboardData();
-  }, [currentAccount, wallets]);
+  }, [fetchDashboardData]);
 
   const registerCreator = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -194,7 +194,7 @@ export default function Dashboard({ currentAccount }: { currentAccount: string }
   const handleDeposit = () => {
     if (currentAccount) {
       navigator.clipboard.writeText(currentAccount);
-      alert(`Address ${currentAccount} copied to clipboard!\n\nYou can fund this address using any wallet or by visiting the BOT Chain Faucet at https://faucet.bohr.life/`);
+      alert(`Address ${currentAccount} copied to clipboard!\n\nYou can fund this address using any wallet or by visiting the BOT Chain Faucet at https://faucet.botchain.ai/basic`);
     }
   };
 

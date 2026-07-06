@@ -27,7 +27,7 @@ const botChainTestnet = {
   },
 };
 
-const PRIVY_APP_ID = "cmr7ondjm00gm0cldcztrhas4";
+const PRIVY_APP_ID = import.meta.env.VITE_PRIVY_APP_ID || "cmr7ondjm00gm0cldcztrhas4";
 
 const sepolia = {
   id: 11155111,

@@ -3,19 +3,24 @@ import fs from "fs";
 import "dotenv/config";
 
 async function main() {
+    const privateKey = process.env["PRIVATE_KEY"];
+    if (!privateKey) {
+        throw new Error("Missing PRIVATE_KEY in contracts/.env");
+    }
+
     const provider = new ethers.JsonRpcProvider("https://rpc.bohr.life");
-    const deployer = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+    const deployer = new ethers.Wallet(privateKey, provider);
     
     const artifactStr = fs.readFileSync("./artifacts/contracts/CreatorRegistry.sol/CreatorRegistry.json", "utf8");
     const artifact = JSON.parse(artifactStr);
-    
-    const registry = new ethers.Contract("0xcb55f29c7F1D2e86E77CDc63C61270A73665Ae33", artifact.abi, deployer);
+    const registryAddress = process.env["CREATOR_REGISTRY_ADDRESS"] || "0xcb55f29c7F1D2e86E77CDc63C61270A73665Ae33";
+    const registry = new ethers.Contract(registryAddress, artifact.abi, deployer);
 
-    console.log("Generating random accounts...");
-    const creator1 = new ethers.Wallet("0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", provider);
-    const creator2 = new ethers.Wallet("0x1123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", provider);
-    const creator3 = new ethers.Wallet("0x2123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", provider);
-    const tipper = new ethers.Wallet("0x3123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef", provider);
+    console.log("Generating demo accounts...");
+    const creator1 = ethers.Wallet.createRandom().connect(provider);
+    const creator2 = ethers.Wallet.createRandom().connect(provider);
+    const creator3 = ethers.Wallet.createRandom().connect(provider);
+    const tipper = ethers.Wallet.createRandom().connect(provider);
 
     console.log("Funding accounts with gas...");
     let tx = await deployer.sendTransaction({ to: creator1.address, value: ethers.parseEther("0.1") });
@@ -52,6 +57,12 @@ async function main() {
     await tx.wait();
 
     console.log("Seed complete!");
+    console.log("Registry:", registryAddress);
+    console.log("Creators:", creator1.address, creator2.address, creator3.address);
+    console.log("Tipper:", tipper.address);
 }
 
-main().catch(console.error);
+main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+});

@@ -1,6 +1,40 @@
-﻿node_modules/
+# Dependencies
+node_modules/
 **/node_modules/
+
+# Build outputs
+frontend/dist/
 dist/
-.env
+dist-ssr/
+.next/
+out/
+
+# Hardhat / generated contract outputs
+contracts/artifacts/
+contracts/cache/
 artifacts/
 cache/
+types/
+broadcast/
+
+# Environment and local deployment metadata
+.env
+.env.*
+!.env.example
+.vercel/
+
+# Logs / coverage / local files
+logs/
+*.log
+coverage/
+.DS_Store
+*.local
+
+# Generated archives/media
+*.zip
+*.mp4
+*.mov
+*.webm
+*.mp3
+screenshots/
+media/
