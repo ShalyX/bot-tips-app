@@ -44,38 +44,50 @@ export default function Home() {
           <div className="hidden lg:flex justify-end relative">
             <div className="relative w-full max-w-md">
               <div className="absolute -inset-1 bg-gradient-to-r from-primary-fixed to-secondary-container rounded-2xl blur opacity-20" />
-              <div className="relative glass-card rounded-2xl p-6 border border-white/10 shadow-2xl flex flex-col gap-6">
-                <div className="flex items-center gap-3 border-b border-white/5 pb-4">
-                  <div className="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center border border-primary-fixed/30 text-primary-fixed">
-                    <span className="material-symbols-outlined">route</span>
+              <div className="relative glass-card rounded-2xl p-6 border border-white/10 shadow-2xl flex flex-col gap-6 transform hover:-translate-y-2 transition-transform duration-500">
+                <div className="flex items-center justify-between border-b border-white/5 pb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center border border-primary-fixed/30 text-primary-fixed">
+                      <span className="material-symbols-outlined">person</span>
+                    </div>
+                    <div>
+                      <div className="font-button-text text-primary">@demo_creator</div>
+                      <div className="font-code-label text-xs text-on-surface-variant">0x7F...3B92</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-button-text text-primary">Consumer flow</div>
-                    <div className="font-code-label text-xs text-on-surface-variant">No custody, no platform balance to claim</div>
+                  <div className="px-3 py-1 rounded-full bg-primary-fixed/10 border border-primary-fixed/20 text-primary-fixed font-code-label text-xs flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary-fixed animate-pulse" />
+                    Registered
                   </div>
                 </div>
 
-                <div className="grid grid-cols-[auto_1fr] gap-4 items-start">
-                  <div className="w-8 h-8 rounded-full bg-primary-fixed text-black flex items-center justify-center font-code-label text-xs">1</div>
-                  <div>
-                    <h3 className="font-button-text text-primary">Connect with X</h3>
-                    <p className="font-body-sm text-on-surface-variant mt-1">Fans recognize the creator profile before they tip.</p>
+                <div className="flex flex-col gap-2">
+                  <div className="text-on-surface-variant font-code-label text-xs uppercase">New tip received</div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="font-headline-xl text-primary text-4xl">25</span>
+                    <span className="font-headline-lg text-primary-fixed text-xl">$BOT</span>
                   </div>
-                  <div className="w-8 h-8 rounded-full bg-primary-fixed text-black flex items-center justify-center font-code-label text-xs">2</div>
-                  <div>
-                    <h3 className="font-button-text text-primary">Choose a creator and amount</h3>
-                    <p className="font-body-sm text-on-surface-variant mt-1">The tip form shows exactly who receives the transfer.</p>
+                </div>
+
+                <div className="glass-panel p-4 rounded-lg bg-black/40 border border-white/5 flex flex-col gap-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-surface-tint font-button-text text-sm">From: Fan wallet</span>
+                    <span className="text-on-surface-variant font-code-label text-xs">Just now</span>
                   </div>
-                  <div className="w-8 h-8 rounded-full bg-primary-fixed text-black flex items-center justify-center font-code-label text-xs">3</div>
-                  <div>
-                    <h3 className="font-button-text text-primary">Confirm in wallet</h3>
-                    <p className="font-body-sm text-on-surface-variant mt-1">Funds go directly to the creator's registered wallet.</p>
-                  </div>
+                  <p className="text-on-surface-variant font-body-sm">"Love the work — sending support for the next drop."</p>
                 </div>
 
                 <div className="w-full bg-primary-fixed/10 border border-primary-fixed/30 text-primary-fixed py-3 rounded-lg font-button-text flex items-center justify-center gap-2">
                   <span className="material-symbols-outlined text-[18px]">check_circle</span>
-                  On-chain status appears after confirmation
+                  On-chain receipt recorded
+                </div>
+              </div>
+
+              <div className="absolute -bottom-6 -left-6 glass-card px-4 py-3 rounded-xl border border-white/10 shadow-xl flex items-center gap-3 animate-float">
+                <span className="material-symbols-outlined text-secondary text-2xl">route</span>
+                <div>
+                  <div className="font-button-text text-primary text-sm">Direct wallet transfer</div>
+                  <div className="font-code-label text-xs text-on-surface-variant">No platform balance to claim</div>
                 </div>
               </div>
             </div>
