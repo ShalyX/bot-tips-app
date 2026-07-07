@@ -22,7 +22,7 @@ export default function Navbar({ currentAccount }: { currentAccount: string }) {
     <header className="fixed top-0 w-full z-50 bg-surface/40 backdrop-blur-xl border-b border-white/10 shadow-[0_0_20px_rgba(195,244,0,0.15)]">
       <div className="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto">
         <Link to="/" className="flex items-center gap-4">
-          <img alt="BOT-TIPS Logo" className="h-8 w-8 rounded-DEFAULT" src="https://lh3.googleusercontent.com/aida/AP1WRLslTVqNUM9YdFCh5GZDand7NE6-D-0phqhpFpb5uythQwusOio87zmc_zoTv1LZJfc17FdSyM4-tH4ljcBPXwHuY8NnIvxoQxUN-IDeHO3o7-sw9xpTZG5I1lh8aU20d7Ym_Qfwgo6b7heUjBqTDRY1w-yzlXq-ZXe_u-9LlY1-Bv6xMyfIW3zR-CKfai4Zyf7Afgi4r3P92heRqDS7d02JE3lUFNvzGJRqo45Ya7bvJgI6_flsMmVBrWM"/>
+          <img alt="BOT-TIPS Logo" className="h-8 w-8 rounded-DEFAULT" src="/favicon.svg"/>
           <span className="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-primary-fixed tracking-tighter">BOT-TIPS</span>
         </Link>
         <nav className="hidden md:flex items-center gap-8">

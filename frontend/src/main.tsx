@@ -47,7 +47,7 @@ createRoot(document.getElementById('root')!).render(
         appearance: {
           theme: 'dark',
           accentColor: '#c3f400',
-          logo: 'https://lh3.googleusercontent.com/aida/AP1WRLslTVqNUM9YdFCh5GZDand7NE6-D-0phqhpFpb5uythQwusOio87zmc_zoTv1LZJfc17FdSyM4-tH4ljcBPXwHuY8NnIvxoQxUN-IDeHO3o7-sw9xpTZG5I1lh8aU20d7Ym_Qfwgo6b7heUjBqTDRY1w-yzlXq-ZXe_u-9LlY1-Bv6xMyfIW3zR-CKfai4Zyf7Afgi4r3P92heRqDS7d02JE3lUFNvzGJRqo45Ya7bvJgI6_flsMmVBrWM',
+          logo: '/favicon.svg',
         },
         defaultChain: botChainTestnet as any,
         supportedChains: [botChainTestnet as any, sepolia as any],
