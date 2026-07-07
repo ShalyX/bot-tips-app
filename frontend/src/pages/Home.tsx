@@ -29,12 +29,12 @@ export default function Home() {
             </div>
 
             <div className="flex flex-wrap items-center gap-4 mt-6 border-t border-white/5 pt-6">
-              <div className="flex items-center gap-2 text-surface-tint font-code-label text-xs uppercase tracking-widest">
+              <div className="flex items-center gap-2 text-surface-tint font-code-label text-xs tracking-wide">
                 <span className="material-symbols-outlined text-[16px]">verified</span>
                 Wallet-owned profiles
               </div>
               <div className="hidden sm:block w-1 h-1 rounded-full bg-surface-variant" />
-              <div className="flex items-center gap-2 text-surface-tint font-code-label text-xs uppercase tracking-widest">
+              <div className="flex items-center gap-2 text-surface-tint font-code-label text-xs tracking-wide">
                 <span className="material-symbols-outlined text-[16px]">bolt</span>
                 Direct $BOT transfers
               </div>
