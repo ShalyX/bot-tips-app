@@ -11,32 +11,32 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="flex flex-col gap-8">
             <h1 className="font-headline-xl text-headline-xl text-primary leading-tight">
-              Send direct creator support in <span className="text-primary-fixed block md:inline">$BOT</span>
+              Support creators directly in <span className="text-primary-fixed block md:inline">$BOT</span>
             </h1>
 
             <p className="font-body-md text-body-md text-on-surface-variant max-w-xl text-lg">
-              BOT-TIPS lets fans tip registered creators on BOT Chain. Creators keep the funds in their own wallet, and every tip is visible on-chain.
+              Tip your favorite creators on BOTchain with instant settlement, public proof, and zero platform middlemen.
             </p>
 
             <div className="flex flex-wrap gap-4 mt-4">
               <Link to="/discover" className="bg-primary-container text-on-primary-fixed font-button-text px-8 py-4 rounded-lg flex items-center gap-2 hover:shadow-[0_0_20px_rgba(195,244,0,0.4)] transition-all group">
-                Find a Creator
+                Tip a Creator
                 <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
               </Link>
               <Link to="/dashboard" className="bg-surface-container border border-primary-fixed/40 text-primary-fixed font-button-text px-8 py-4 rounded-lg hover:bg-primary-fixed hover:text-on-primary-fixed transition-all">
-                Register Your Profile
+                Create Profile
               </Link>
             </div>
 
             <div className="flex flex-wrap items-center gap-4 mt-6 border-t border-white/5 pt-6">
               <div className="flex items-center gap-2 text-surface-tint font-code-label text-xs tracking-wide">
                 <span className="material-symbols-outlined text-[16px]">verified</span>
-                Wallet-owned profiles
+                Powered by BOTchain
               </div>
               <div className="hidden sm:block w-1 h-1 rounded-full bg-surface-variant" />
               <div className="flex items-center gap-2 text-surface-tint font-code-label text-xs tracking-wide">
                 <span className="material-symbols-outlined text-[16px]">bolt</span>
-                Direct $BOT transfers
+                Settled in $BOT
               </div>
             </div>
           </div>
@@ -86,8 +86,8 @@ export default function Home() {
               <div className="absolute -bottom-6 -left-6 glass-card px-4 py-3 rounded-xl border border-white/10 shadow-xl flex items-center gap-3 animate-float">
                 <span className="material-symbols-outlined text-secondary text-2xl">route</span>
                 <div>
-                  <div className="font-button-text text-primary text-sm">Direct wallet transfer</div>
-                  <div className="font-code-label text-xs text-on-surface-variant">No platform balance to claim</div>
+                  <div className="font-button-text text-primary text-sm">100+ $BOT Raised</div>
+                  <div className="font-code-label text-xs text-on-surface-variant">On-chain Badge Earned</div>
                 </div>
               </div>
             </div>
