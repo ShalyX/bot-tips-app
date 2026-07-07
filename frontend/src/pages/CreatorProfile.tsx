@@ -3,6 +3,7 @@ import { BrowserProvider, Contract, parseEther, formatEther } from 'ethers';
 import { useWallets } from '@privy-io/react-auth';
 import { useParams } from 'react-router-dom';
 import { CREATOR_REGISTRY_ADDRESS, CREATOR_REGISTRY_ABI } from '../config/contracts';
+import { getFriendlyError, shortenAddress } from '../lib/utils';
 
 export default function CreatorProfile({ currentAccount }: { currentAccount: string }) {
   const { address } = useParams();
@@ -22,6 +23,7 @@ export default function CreatorProfile({ currentAccount }: { currentAccount: str
   const [campaignTitle, setCampaignTitle] = useState("");
   const [campaignTarget, setCampaignTarget] = useState("0");
   const [totalTipsReceived, setTotalTipsReceived] = useState(0);
+  const [statusMessage, setStatusMessage] = useState<{ tone: 'success' | 'error' | 'info'; text: string } | null>(null);
 
   const { wallets } = useWallets();
 
@@ -59,6 +61,7 @@ export default function CreatorProfile({ currentAccount }: { currentAccount: str
       }
     } catch (error) {
       console.error(error);
+      setStatusMessage({ tone: 'error', text: getFriendlyError(error, 'Could not load this creator from BOT Chain. Check your wallet network and refresh.') });
     }
   }, [targetAddress, wallets]);
 
@@ -69,11 +72,11 @@ export default function CreatorProfile({ currentAccount }: { currentAccount: str
   const buyCoffee = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentAccount) {
-        alert("Please connect wallet first");
+        setStatusMessage({ tone: 'info', text: 'Connect your wallet before sending a tip.' });
         return;
     }
     if (!isRegistered) {
-        alert("This creator is not registered.");
+        setStatusMessage({ tone: 'error', text: 'This creator is not registered, so tips are disabled.' });
         return;
     }
     try {
@@ -97,12 +100,14 @@ export default function CreatorProfile({ currentAccount }: { currentAccount: str
         
         setName("");
         setMessage("");
-        setAmount("");
+        setAmount("10");
+        setStatusMessage({ tone: 'success', text: 'Tip confirmed on BOT Chain.' });
         
         getCreatorData();
       }
     } catch (error) {
       console.error(error);
+      setStatusMessage({ tone: 'error', text: getFriendlyError(error, 'Tip failed. Please check your wallet, amount, and network.') });
       setIsMining(false);
     }
   };
@@ -116,7 +121,7 @@ export default function CreatorProfile({ currentAccount }: { currentAccount: str
       <main className="flex-grow pt-[100px] px-gutter max-w-container-max mx-auto w-full flex flex-col items-center justify-center min-h-[50vh]">
         <span className="material-symbols-outlined text-6xl text-surface-tint mb-4 opacity-50">person_off</span>
         <h1 className="font-headline-xl text-primary mb-2">Creator Not Found</h1>
-        <p className="font-body-md text-on-surface-variant text-center max-w-md">The wallet address {targetAddress.slice(0, 6)}...{targetAddress.slice(-4)} is not registered as a creator on the BOT Chain yet.</p>
+        <p className="font-body-md text-on-surface-variant text-center max-w-md">The wallet address {shortenAddress(targetAddress)} is not registered as a creator on the BOT Chain yet.</p>
       </main>
     );
   }
@@ -145,7 +150,7 @@ export default function CreatorProfile({ currentAccount }: { currentAccount: str
                     {creatorUsername || "Loading..."}
                     </h1>
                     <p className="font-code-label text-sm text-primary-fixed/80 font-medium">
-                    {targetAddress.slice(0, 6)}...{targetAddress.slice(-4)}
+                    {shortenAddress(targetAddress)}
                     </p>
                     <div className="flex flex-wrap gap-2 mt-2">
                         {memos.length >= 10 && (
@@ -165,7 +170,7 @@ export default function CreatorProfile({ currentAccount }: { currentAccount: str
                 <button 
                     onClick={() => {
                         navigator.clipboard.writeText(window.location.href);
-                        alert("Profile link copied! Share it with your fans.");
+                        setStatusMessage({ tone: 'success', text: 'Profile link copied.' });
                     }}
                     className="p-2 rounded-full bg-white/5 border border-white/10 text-on-surface-variant hover:text-primary-fixed hover:bg-primary-fixed/10 transition-colors"
                     title="Share Profile"
@@ -181,6 +186,11 @@ export default function CreatorProfile({ currentAccount }: { currentAccount: str
 
         <div className="glass-card rounded-xl p-8 flex flex-col gap-8 relative overflow-hidden">
           <div className="absolute -top-10 -left-10 w-40 h-40 bg-primary-fixed/5 rounded-full blur-3xl pointer-events-none"></div>
+          {statusMessage && (
+            <div className={`rounded-lg border px-4 py-3 font-body-sm z-10 ${statusMessage.tone === 'success' ? 'border-primary-fixed/30 bg-primary-fixed/10 text-primary-fixed' : statusMessage.tone === 'error' ? 'border-error/30 bg-error/10 text-error' : 'border-white/10 bg-white/5 text-on-surface-variant'}`}>
+              {statusMessage.text}
+            </div>
+          )}
           <div className="flex items-center justify-between border-b border-white/5 pb-4 z-10">
             <h2 className="font-headline-lg-mobile text-primary">Support My Work</h2>
             <span className="material-symbols-outlined text-primary-fixed">local_cafe</span>

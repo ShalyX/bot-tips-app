@@ -24,6 +24,7 @@ export default function App() {
           <Route path="/discover" element={<Discovery />} />
           <Route path="/dashboard" element={<Dashboard currentAccount={currentAccount} />} />
           <Route path="/creator/:address" element={<CreatorProfile currentAccount={currentAccount} />} />
+          <Route path="*" element={<Home />} />
         </Routes>
         <Footer />
       </div>

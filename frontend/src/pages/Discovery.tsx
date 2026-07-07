@@ -3,11 +3,13 @@ import { BrowserProvider, Contract, formatEther } from 'ethers';
 import { useWallets } from '@privy-io/react-auth';
 import { Link } from 'react-router-dom';
 import { CREATOR_REGISTRY_ADDRESS, CREATOR_REGISTRY_ABI } from '../config/contracts';
+import { shortenAddress } from '../lib/utils';
 
 export default function Discovery() {
   const [creators, setCreators] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
   const { wallets } = useWallets();
 
   useEffect(() => {
@@ -43,6 +45,7 @@ export default function Discovery() {
         }
       } catch (error) {
         console.error("Error fetching creators:", error);
+        setLoadError('Could not load creators from BOT Chain. Connect a wallet on the right network and refresh.');
         setIsLoading(false);
       }
     };
@@ -90,7 +93,7 @@ export default function Discovery() {
             />
           </div>
           <div className="flex gap-2 overflow-x-auto scrollbar-hide py-2 md:py-0 w-full md:w-auto">
-            <button className="px-4 py-2 rounded-full border border-primary-fixed bg-primary-fixed/10 text-primary-fixed font-code-label text-code-label whitespace-nowrap">All Creators</button>
+            <span className="px-4 py-2 rounded-full border border-primary-fixed bg-primary-fixed/10 text-primary-fixed font-code-label text-code-label whitespace-nowrap">All Creators</span>
           </div>
         </div>
       </section>
@@ -100,9 +103,13 @@ export default function Discovery() {
         <div className="flex justify-center items-center h-48">
           <p className="font-code-label text-primary-fixed">Loading creators from BOT Chain...</p>
         </div>
+      ) : loadError ? (
+        <div className="flex justify-center items-center h-48 glass-panel rounded-xl px-6 text-center">
+          <p className="font-code-label text-error">{loadError}</p>
+        </div>
       ) : filteredCreators.length === 0 ? (
-        <div className="flex justify-center items-center h-48 glass-panel rounded-xl">
-          <p className="font-code-label text-on-surface-variant">No creators found.</p>
+        <div className="flex justify-center items-center h-48 glass-panel rounded-xl px-6 text-center">
+          <p className="font-code-label text-on-surface-variant">No creators match this search yet.</p>
         </div>
       ) : (
         <div className="flex flex-col gap-12">
@@ -136,7 +143,7 @@ export default function Discovery() {
                             </div>
                             <div>
                               <h3 className="font-headline-lg-mobile text-headline-lg-mobile text-primary">{creator.username}</h3>
-                              <p className="font-code-label text-code-label text-surface-tint">{creator.wallet.slice(0, 6)}...{creator.wallet.slice(-4)}</p>
+                              <p className="font-code-label text-code-label text-surface-tint">{shortenAddress(creator.wallet)}</p>
                             </div>
                           </div>
                           <div className={`flex items-center gap-1 ${badge.bg} ${badge.color} px-3 py-1 rounded-full font-bold`}>
@@ -173,7 +180,7 @@ export default function Discovery() {
                             <span className="material-symbols-outlined text-surface-tint text-sm">local_cafe</span>
                             <span className="font-code-label text-xs text-primary font-bold">{creator.totalTipsReceived.toFixed(2)} $BOT raised</span>
                           </div>
-                          <button className="bg-transparent border border-white/10 text-primary-fixed px-4 py-2 rounded-DEFAULT font-button-text text-button-text group-hover:bg-primary-container group-hover:text-on-primary-fixed group-hover:border-primary-container transition-all">Support</button>
+                          <span className="bg-transparent border border-white/10 text-primary-fixed px-4 py-2 rounded-DEFAULT font-button-text text-button-text group-hover:bg-primary-container group-hover:text-on-primary-fixed group-hover:border-primary-container transition-all">Support</span>
                         </div>
                       </div>
                     </Link>
@@ -211,7 +218,7 @@ export default function Discovery() {
                           </div>
                           <div>
                             <h3 className="font-headline-lg-mobile text-headline-lg-mobile text-primary">{creator.username}</h3>
-                            <p className="font-code-label text-code-label text-surface-tint">{creator.wallet.slice(0, 6)}...{creator.wallet.slice(-4)}</p>
+                            <p className="font-code-label text-code-label text-surface-tint">{shortenAddress(creator.wallet)}</p>
                           </div>
                         </div>
                       </div>
@@ -245,7 +252,7 @@ export default function Discovery() {
                           <span className="material-symbols-outlined text-surface-tint text-sm">local_cafe</span>
                           <span className="font-code-label text-xs text-primary">{creator.totalTipsReceived.toFixed(2)} $BOT raised</span>
                         </div>
-                        <button className="bg-transparent border border-white/10 text-primary-fixed px-4 py-2 rounded-DEFAULT font-button-text text-button-text group-hover:bg-primary-container group-hover:text-on-primary-fixed group-hover:border-primary-container transition-all">Support</button>
+                        <span className="bg-transparent border border-white/10 text-primary-fixed px-4 py-2 rounded-DEFAULT font-button-text text-button-text group-hover:bg-primary-container group-hover:text-on-primary-fixed group-hover:border-primary-container transition-all">Support</span>
                       </div>
                     </div>
                   </Link>

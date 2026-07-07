@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { BrowserProvider, Contract, formatEther, parseEther } from 'ethers';
 import { useWallets, usePrivy } from '@privy-io/react-auth';
 import { CREATOR_REGISTRY_ADDRESS, CREATOR_REGISTRY_ABI } from '../config/contracts';
+import { getFriendlyError, shortenAddress } from '../lib/utils';
 
 export default function Dashboard({ currentAccount }: { currentAccount: string }) {
   const [balance, setBalance] = useState("0");
@@ -28,6 +29,11 @@ export default function Dashboard({ currentAccount }: { currentAccount: string }
   const [currentCampaignTitle, setCurrentCampaignTitle] = useState("");
   const [currentCampaignTarget, setCurrentCampaignTarget] = useState("0");
   const [isSettingCampaign, setIsSettingCampaign] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<{ tone: 'success' | 'error' | 'info'; text: string } | null>(null);
+
+  const notify = (tone: 'success' | 'error' | 'info', text: string) => {
+    setStatusMessage({ tone, text });
+  };
   
   const { wallets } = useWallets();
   const { user, createWallet, exportWallet } = usePrivy();
@@ -100,6 +106,7 @@ export default function Dashboard({ currentAccount }: { currentAccount: string }
       }
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
+      notify('error', getFriendlyError(error, 'Could not load dashboard data from BOT Chain. Check your wallet network and retry.'));
     }
   }, [currentAccount, wallets]);
 
@@ -120,14 +127,16 @@ export default function Dashboard({ currentAccount }: { currentAccount: string }
       
       const registryContract = new Contract(CREATOR_REGISTRY_ADDRESS, CREATOR_REGISTRY_ABI, signer);
       
-      const tx = await registryContract.registerCreator(xUsername, regBio || "Creator from X", xAvatar);
+      const tx = await registryContract.registerCreator(xUsername, regBio || "Creator profile linked from X", xAvatar);
       await tx.wait();
       
       setIsRegistering(false);
       setRegBio("");
+      notify('success', 'Creator profile registered. Fans can now tip this wallet directly.');
       fetchDashboardData();
     } catch (error) {
       console.error("Error registering:", error);
+      notify('error', getFriendlyError(error, 'Registration failed. Please check your wallet and try again.'));
       setIsRegistering(false);
     }
   };
@@ -155,10 +164,10 @@ export default function Dashboard({ currentAccount }: { currentAccount: string }
       setWithdrawAddress("");
       setWithdrawAmount("");
       fetchDashboardData();
-      alert("Withdrawal successful!");
+      notify('success', 'Transfer submitted and confirmed on BOT Chain.');
     } catch (error) {
       console.error("Error withdrawing:", error);
-      alert("Withdrawal failed. Check console for details.");
+      notify('error', getFriendlyError(error, 'Transfer failed. Please verify the address, amount, and wallet network.'));
       setIsWithdrawing(false);
     }
   };
@@ -183,10 +192,10 @@ export default function Dashboard({ currentAccount }: { currentAccount: string }
       setCampaignTitle("");
       setCampaignTarget("");
       fetchDashboardData();
-      alert("Campaign set successfully!");
+      notify('success', 'Campaign goal saved on-chain.');
     } catch (error) {
       console.error("Error setting campaign:", error);
-      alert("Failed to set campaign.");
+      notify('error', getFriendlyError(error, 'Could not save the campaign goal. Please try again.'));
       setIsSettingCampaign(false);
     }
   };
@@ -194,7 +203,7 @@ export default function Dashboard({ currentAccount }: { currentAccount: string }
   const handleDeposit = () => {
     if (currentAccount) {
       navigator.clipboard.writeText(currentAccount);
-      alert(`Address ${currentAccount} copied to clipboard!\n\nYou can fund this address using any wallet or by visiting the BOT Chain Faucet at https://faucet.botchain.ai/basic`);
+      notify('success', `Wallet address ${shortenAddress(currentAccount)} copied. Fund it from another wallet or the BOT Chain faucet.`);
     }
   };
 
@@ -202,7 +211,12 @@ export default function Dashboard({ currentAccount }: { currentAccount: string }
     <main className="flex-grow pt-[100px] px-gutter max-w-container-max mx-auto w-full flex flex-col gap-8 pb-[100px] relative">
       <header className="mb-4">
         <h1 className="font-headline-xl text-headline-xl text-primary">Dashboard</h1>
-        <p className="font-body-md text-on-surface-variant">Manage your tipping ecosystem and wallet balance.</p>
+        <p className="font-body-md text-on-surface-variant">Manage your creator profile, campaign goal, and wallet balance.</p>
+        {statusMessage && (
+          <div className={`mt-4 rounded-lg border px-4 py-3 font-body-sm ${statusMessage.tone === 'success' ? 'border-primary-fixed/30 bg-primary-fixed/10 text-primary-fixed' : statusMessage.tone === 'error' ? 'border-error/30 bg-error/10 text-error' : 'border-white/10 bg-white/5 text-on-surface-variant'}`}>
+            {statusMessage.text}
+          </div>
+        )}
         
         {/* Wallet Connection / Creation State */}
         {!currentAccount && !user && (
@@ -216,7 +230,7 @@ export default function Dashboard({ currentAccount }: { currentAccount: string }
               <p className="font-body-sm text-on-surface-variant">You're logged in with X as @{xUsername}, but you don't have a wallet yet.</p>
             </div>
             <button 
-              onClick={() => { if(typeof createWallet === 'function') createWallet(); else alert("Wallet creation is handled by Privy automatically. Please refresh."); }}
+              onClick={() => { if(typeof createWallet === 'function') createWallet(); else notify('info', 'Wallet creation is handled by Privy automatically. Refresh and try again if it does not appear.'); }}
               className="bg-primary-fixed text-on-primary-fixed font-button-text py-2 px-6 rounded-DEFAULT btn-glow whitespace-nowrap"
             >
               Create Secure Wallet
@@ -312,7 +326,7 @@ export default function Dashboard({ currentAccount }: { currentAccount: string }
               <button 
                 onClick={() => {
                   navigator.clipboard.writeText(`${window.location.origin}/creator/${currentAccount}`);
-                  alert("Profile link copied! Share it with your fans.");
+                  notify('success', 'Profile link copied. Share it with fans when you are ready.');
                 }}
                 className="mt-2 bg-transparent border border-primary-fixed/50 text-primary-fixed px-6 py-2 rounded-full font-button-text hover:bg-primary-fixed hover:text-on-primary-fixed transition-all flex items-center gap-2"
               >
@@ -400,7 +414,7 @@ export default function Dashboard({ currentAccount }: { currentAccount: string }
                         {tx.type}
                       </td>
                       <td className="p-6 text-on-surface-variant">
-                        {tx.address.slice(0, 6)}...{tx.address.slice(-4)}
+                        {shortenAddress(tx.address)}
                       </td>
                       <td className="p-6 font-medium text-primary">
                         {tx.amount}
@@ -444,7 +458,7 @@ export default function Dashboard({ currentAccount }: { currentAccount: string }
                       {tx.type}
                     </td>
                     <td className="p-6 text-on-surface-variant">
-                      {tx.address.slice(0, 6)}...{tx.address.slice(-4)}
+                      {shortenAddress(tx.address)}
                     </td>
                     <td className="p-6 font-medium text-surface-tint">
                       {tx.amount}
