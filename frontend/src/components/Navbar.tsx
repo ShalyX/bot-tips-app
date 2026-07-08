@@ -22,7 +22,7 @@ export default function Navbar({ currentAccount }: { currentAccount: string }) {
     <header className="fixed top-0 w-full z-50 bg-surface/40 backdrop-blur-xl border-b border-white/10 shadow-[0_0_20px_rgba(195,244,0,0.15)]">
       <div className="flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto">
         <Link to="/" className="flex items-center gap-4">
-          <img alt="BOT-TIPS Logo" className="h-8 w-8 rounded-DEFAULT" src="/favicon.svg"/>
+          <img alt="BOT-TIPS Logo" className="h-8 w-8 rounded-DEFAULT" src="/bot-tips-logo.svg"/>
           <span className="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-primary-fixed tracking-tighter">BOT-TIPS</span>
         </Link>
         <nav className="hidden md:flex items-center gap-8">
